@@ -1,0 +1,61 @@
+class Employee:
+    def __init__(self, emp_id, name, department, gender):
+        self.id = emp_id
+        self.name = name 
+        self.department = department
+        self.gender = gender
+
+class EmployeeCollection:
+    def __init__(self, name):
+        self.name = name
+        self.employees = []
+    
+    def create_collection(self):
+        self.employees = []
+    
+    def get_emp_count(self):
+        return len(self.employees)
+    
+    def index_data(self, column):
+        print(f"Indexed column '{column}' in collection.")
+    
+    def del_emp_by_id(self, emp_id):
+        initial_count = len(self.employees)
+        self.employees = [emp for emp in self.employees if emp.id != emp_id]
+        if len(self.employees) < initial_count:
+            print(f"Deleted employee with ID {emp_id}.")
+        else:
+            print(f"Employee with ID {emp_id} not found.")
+    
+    def search_by_column(self, column, value):
+        print(f"Search results for {column} = {value}:")
+        for emp in self.employees:
+            if (column == "Department" and emp.department == value) or (column == "Gender" and emp.gender == value):
+                print(f"ID: {emp.id}, Name: {emp.name}, Department: {emp.department}, Gender: {emp.gender}") 
+    
+    def get_dep_facet(self):
+        it_count = sum(emp.department == "IT" for emp in self.employees)
+        hr_count = sum(emp.department == "HR" for emp in self.employees)
+        print(f"IT: {it_count}, HR: {hr_count}")
+
+v_nameCollection = EmployeeCollection("Hash_Abi") 
+v_phoneCollection = EmployeeCollection("Hash_LastFourDigits")
+
+v_nameCollection.create_collection()
+v_phoneCollection.create_collection()
+
+v_nameCollection.employees.append(Employee("E02001", "Abi", "IT", "Male"))
+v_nameCollection.employees.append(Employee("E02002", "Alice", "HR", "Female"))
+v_phoneCollection.employees.append(Employee("P04001", "Bob", "IT", "Male"))
+
+print("Employee count in v_nameCollection:", v_nameCollection.get_emp_count())
+v_nameCollection.index_data("Department")
+v_phoneCollection.index_data("Gender")
+print("Employee count in v_nameCollection:", v_nameCollection.get_emp_count())
+v_nameCollection.del_emp_by_id("E02003")
+print("Employee count in v_nameCollection:", v_nameCollection.get_emp_count())
+v_nameCollection.search_by_column("Department", "IT")
+v_nameCollection.search_by_column("Gender", "Male")
+v_phoneCollection.search_by_column("Department", "IT")
+v_nameCollection.get_dep_facet()
+v_phoneCollection.get_dep_facet()
